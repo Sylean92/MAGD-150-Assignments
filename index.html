@@ -434,22 +434,721 @@ class Timer{
   <canvas id="mycanvas1"></canvas>
   
   <script type="text/processing" data-processing-target="mycanvas2">
+  
+    int forward = 0;
+
+//bullet
+int bulletP1X = mouseX+248;
+int bulletP1Y =mouseY+100; 
+int bulletP2X = mouseX+207;
+int bulletP2Y = mouseY+100;
+int bulletRextX = mouseX+215;
+int bulletRextY = mouseY+95;
+int bulletT1X = mouseX+240;
+int bulletT1Y = mouseY+100;
+int bulletT2X = mouseX+215;
+int bulletT2Y = mouseY+100;
+
+void setup(){
+  
+size(1300,810);  
+  
+}
+
+void draw(){
+  
+  background(0,0,0);
+  
+  strokeWeight(5);
+  stroke(255,255,255);  
+  //stars
+  point(60,70);  
+  point(400,300);
+  point(100,90);
+  point(150,120);
+  point(200,200);
+  point(230,100);
+  point(400,400);
+  point(100,400);
+  point(60,700);  
+  point(1000,300);
+  point(900,90);
+  point(910,500);
+  point(600,500);
+  point(620,300);
+  point(1100,200);
+  point(100,600);
+  point(700,800);  
+  point(400,750);
+  point(350,550);
+  point(1200,600);
+  point(1250,200);
+  point(900,700);
+  point(950,750);
+  point(1250,750);
+  
+  fill(121,17,17);
+  strokeWeight(1);
+  stroke(0,0,0);
+
+  triangle(mouseX+20,mouseY+50,mouseX+20,mouseY+150,mouseX+200,mouseY+100);
+  fill(255,255,210);
+  triangle(mouseX+150,mouseY+87,mouseX+150,mouseY+113,mouseX+200,mouseY+100);
+  
+  //Left wing of Space Ship
+  beginShape();
+  stroke(255,255,255);
+    fill(121,17,17);
+    vertex(mouseX+20,mouseY+50);
+    vertex(mouseX+40,mouseY+40);
+    vertex(mouseX+200,mouseY+95);
+    vertex(mouseX+200,mouseY+105);
+  endShape();
+
+  //Right wing of Space Ship
+  beginShape();
+  stroke(255,255,255);
+    fill(121,17,17);
+    vertex(mouseX+20,mouseY+150);
+    vertex(mouseX+40,mouseY+160);
+    vertex(mouseX+200,mouseY+105);
+    vertex(mouseX+200,mouseY+100);
+  endShape();
+
+  //Inside white banner of Space Ship (top)
+  beginShape();
+  stroke(255,255,255);
+    fill(255,255,255);
+    vertex(mouseX+20,mouseY+65);
+    vertex(mouseX+55,mouseY+85);
+    vertex(mouseX+150,mouseY+90);
+    vertex(mouseX+150,mouseY+100);
+    vertex(mouseX+20,mouseY+100);
+  endShape();
+
+  //Inside white banner of Space Ship (bottom)
+  beginShape();
+    vertex(mouseX+20,mouseY+135);
+    vertex(mouseX+55,mouseY+115);
+    vertex(mouseX+150,mouseY+112);
+    vertex(mouseX+150,mouseY+100);
+    vertex(mouseX+20,mouseY+100);
+  endShape();
+
+  //White back of ship behind the cockpit
+  beginShape();
+    fill(255,255,255);
+    vertex(mouseX+5,mouseY+80);
+    vertex(mouseX+20,mouseY+65);
+    vertex(mouseX+20,mouseY+135);
+    vertex(mouseX+5,mouseY+115);  
+  endShape();
+  
+  fill(0,0,0);
+  ellipse(mouseX+30,mouseY+100,30,20);
+  ellipse(mouseX+60,mouseY+70,10,10);
+  ellipse(mouseX+60,mouseY+130,10,10);
+  stroke(0,0,0);
+  
+  //square shapes inside ship
+  fill(255,255,255);
+  stroke(0,0,0);
+  rect(mouseX+100,mouseY+95,50,10);
+  rect(mouseX+105,mouseY+98,40,4);
+  
+  //line design inside white part of Space Ship
+  line(mouseX+20,mouseY+100,mouseX+60,mouseY+70);
+  line(mouseX+30,mouseY+110,mouseX+60,mouseY+130);
+
+  //This changes the background and wing color of Space Ship
+  if(mousePressed){
+   
+  fill(217,200,11);
+  background(9,35,80);
+  
+  strokeWeight(1);
+  stroke(0,0,0);
+
+  triangle(mouseX+20,mouseY+50,mouseX+20,mouseY+150,mouseX+200,mouseY+100);
+  fill(255,255,210);
+  triangle(mouseX+150,mouseY+87,mouseX+150,mouseY+113,mouseX+200,mouseY+100);
+  
+  //Left wing of Space Ship
+  beginShape();
+  stroke(255,255,255);
+    fill(121,17,17);
+    vertex(mouseX+20,mouseY+50);
+    vertex(mouseX+40,mouseY+40);
+    vertex(mouseX+200,mouseY+95);
+    vertex(mouseX+200,mouseY+105);
+  endShape();
+
+  //Right wing of Space Ship
+  beginShape();
+  stroke(255,255,255);
+    fill(121,17,17);
+    vertex(mouseX+20,mouseY+150);
+    vertex(mouseX+40,mouseY+160);
+    vertex(mouseX+200,mouseY+105);
+    vertex(mouseX+200,mouseY+100);
+  endShape();
+
+  //Inside white banner of Space Ship (top)
+  beginShape();
+  stroke(255,255,255);
+    fill(255,255,255);
+    vertex(mouseX+20,mouseY+65);
+    vertex(mouseX+55,mouseY+85);
+    vertex(mouseX+150,mouseY+90);
+    vertex(mouseX+150,mouseY+100);
+    vertex(mouseX+20,mouseY+100);
+  endShape();
+
+  //Inside white banner of Space Ship (bottom)
+  beginShape();
+    vertex(mouseX+20,mouseY+135);
+    vertex(mouseX+55,mouseY+115);
+    vertex(mouseX+150,mouseY+112);
+    vertex(mouseX+150,mouseY+100);
+    vertex(mouseX+20,mouseY+100);
+  endShape();
+
+  //White back of ship behind the cockpit
+  beginShape();
+    fill(255,255,255);
+    vertex(mouseX+5,mouseY+80);
+    vertex(mouseX+20,mouseY+65);
+    vertex(mouseX+20,mouseY+135);
+    vertex(mouseX+5,mouseY+115);  
+  endShape();
+  
+  fill(0,0,0);
+  ellipse(mouseX+30,mouseY+100,30,20);
+  ellipse(mouseX+60,mouseY+70,10,10);
+  ellipse(mouseX+60,mouseY+130,10,10);
+  
+  stroke(0,0,0);
+  
+  //square shapes inside ship
+  fill(255,255,255);
+  stroke(0,0,0);
+  rect(mouseX+100,mouseY+95,50,10);
+  rect(mouseX+105,mouseY+98,40,4);
+  
+  //line design inside white part of Space Ship
+  line(mouseX+20,mouseY+100,mouseX+60,mouseY+70);
+  line(mouseX+30,mouseY+110,mouseX+60,mouseY+130);
+  
+  }
+  
+  //If the key is pressed, shoot the bullet from the Space Ship
+  if (keyPressed == true){
+    
+     fill(150,0,0);
+    // rect(mouseX+200, mouseY+ 130, 300,10);
+    
+  //bullet
+  bulletP1X = mouseX+248;
+  bulletP1Y =mouseY+100; 
+  bulletP2X = mouseX+207;
+  bulletP2Y = mouseY+100;  
+  bulletRextX = mouseX+215;
+  bulletRextY = mouseY+95;
+  bulletT1X = mouseX+515;
+  bulletT1Y = mouseY+100;
+  bulletT2X = mouseX+217;
+  bulletT2Y = mouseY+100;
+  
+  //bullet body
+  strokeWeight(1);
+  //fill(255,255,255);
+  rect(bulletRextX,bulletRextY,300,10);
+
+  //TWO_PI IS FULL CIRCLE
+  //PI + HALF_PI == 1.5 PI == -0.5 PI
+  //TAU + HALF_PI == TWO_PI + HALF_PI == 2.5 PI == 0.5 PI
+  
+  //round ends of bullet
+  arc(bulletT1X,bulletT1Y,12,12,-HALF_PI, HALF_PI);
+  arc(bulletT2X,bulletT2Y,13,12,radians(90),radians(270));  
+  
+
+}
+    
+  }
   </script>
   <canvas id="mycanvas2"></canvas>
   
   <script type="text/processing" data-processing-target="mycanvas3">
+  
+  //6 diff shapes
+//2 Text()
+// 2 Variables
+//use mousePressed
+
+int crossT1bottomY = 300;
+int crossT2bottomY = 550;
+PFont font;
+
+
+
+
+void setup(){
+  
+  size(1281,801);
+  font = createFont("Frutiger",25, true);
+  textFont(font);
+}
+
+
+
+//False Dilemma... also known as black-and-white
+//Your are either with God or against him.
+
+void draw(){
+  
+  background(255,255,255);
+  stroke(200,150,30);
+  fill(200,150,30);
+  
+  rect(400,400,250,50);
+  rect(495,300,60,250);
+  fill(200,160,30);
+  triangle(495,crossT1bottomY,555,crossT1bottomY,525,380);
+  triangle(495,crossT2bottomY,555,crossT2bottomY,525,480);
+
+  //heart
+  fill(255,0,0);
+  stroke(255,0,0);
+  arc(300,300,30,30,-PI, 0+PI);
+  arc(325,300,30,30,-PI, 0+PI);
+
+  beginShape();
+    strokeWeight(2);
+    vertex(288,310);
+    vertex(315,345);
+    vertex(337,310);
+  endShape();
+   
+  
+  text("You are either with God...", 750,430);
+  
+  if(mousePressed){
+    
+   background(0,0,0);
+   stroke(255,0,0);
+   fill(255,0,0);
+   
+   text("False Dilemma.", 525,100);
+   font = createFont("Frutiger",15, true);
+   textFont(font);
+   text("The fallacy is also known as 'black and white', where only 2 options or outcomes are provided and make it seem like there is only two possibilities.", 150,150);
+   
+   strokeWeight(10);
+   stroke(255,0,0);
+   fill(0,0,0);
+   ellipse(525,430,350,350);
+   
+   fill(255,0,0);
+   line(450,275,650,550);
+   
+   strokeWeight(1);
+   rect(400,400,250,50);
+   rect(495,300,60,250);
+   fill(220,0,0);
+   triangle(495,crossT1bottomY,555,crossT1bottomY,525,380);
+   triangle(495,crossT2bottomY,555,crossT2bottomY,525,480);  
+   font = createFont("Frutiger",25, true);
+   textFont(font);
+   text("or against him!", 750,430);
+    
+  }
+  
+}
+  
   </script>
   <canvas id="mycanvas3"></canvas>
   
   <script type="text/processing" data-processing-target="mycanvas4">
   </script>
   
+   int grapeCount = 10; 
+ int grapePosX = 100;
+ int grapePosY = 300;
+ boolean newState = false;
+ PFont font;
+ boolean stopCreate = true;
+ boolean breakMouse = false;
+ boolean save = false;
+ 
+void setup(){
+  size(800,500);
+  font = createFont("Frutiger",20, true);
+ textFont(font); 
+  frameRate(1);
+ }
+ 
+void draw(){
+ //print(breakMouse);
+ print("Save: " + save);
+ 
+  if (breakMouse == false){
+
+    //if (save == true){
+      // frameRate(10);
+     //  background(0,255,0);
+     //  fill(255,0,0);
+     //  text("GOOD JOB!!!! You Saved a Grape!", width/2, height/2);
+     //  save = false;
+   // }
+    
+  font = createFont("Frutiger",20, true);
+  textFont(font);
+
+  background(255);
+  text("YUM!! Can't wait to EAT these grapes!", 150,50);
+    
+  drawTable();
+  drawPlate();
+  drawGrapes();
+  text("YUM!! Can't wait to EAT these grapes!", 150,50);  
   
-  <canvas id="mycanvas5"></canvas>
+  fill(255,0,0);  
+  text("Oh NOOOO! He is gonna eat us!!!", 430,300);
+  text("WE SHOULD RUN!", 450,450);
+  text("I don't want to get eaten!", 100,350);  
+  fill(0,0,0);
+  }
+  
+  //Start moving the one grape to save him
+  if (mousePressed){    
+    //if breakMouse is true then mousePressed is breaked and screen is reset
+    if( breakMouse == true){
+      restart();
+      loop();
+     // save = true;
+      breakMouse = false;      
+      
+      //if breakMouse is false then mousePressed is active and you can move grape
+    }else{
+    breakMouse = false;    
+    background(255);
+    fill(0,0,0);
+    text("Keep clicking mouse to save the grape!", 50,15);    
+    fill(66,2,70);
+    runGrape();                
+    text("WHERE ARE YOU GOING??", 150,80);
+    newTable();
+    newPlate();
+    Grapes();       
+    fill(255,0,0);
+    text("YOU CANT GET ME!!", 450,250);
+    }
+   }
+}
+//Rest of Functions bellow
+
+//move the running grape
+void runGrape(){
+  print(" " +  grapePosX + " " );
+  
+  if (grapePosX >= 800){        
+    breakMouse = true;    
+  }
+    grapePosX = grapePosX + 100;    
+}
+//make scene 2's plate
+void newPlate(){
+    fill(255);
+  strokeWeight(2);
+   stroke(0,0,0);
+  ellipse(0,300,500,300);
+  ellipse(0,300,450,250);  
+}
+//make scene 2's table
+void newTable(){
+ strokeWeight(0);
+ stroke(0,0,0);
+ fill(87,67,6);
+ rect(0,100,width,400); 
+}
+void drawGrapes(){  
+   //determine how many grapes will be created on plate (5 to 10) and create the grape
+  for(int i=0; i < numberOfGrapes(); i++){    
+     updateGrapePosition();   
+  }
+    noLoop();
+}
+//draw plate background
+void drawPlate(){
+  fill(255);
+  stroke(0,0,0);  
+  strokeWeight(2);
+  ellipse(300,300,500,300);
+  ellipse(300,300,450,250); 
+}
+//draw table background
+void drawTable(){
+ strokeWeight(0);
+ fill(87,67,6);
+ rect(0,100,width,400);
+}
+//determine the random number of grapes created
+int numberOfGrapes(){ 
+ int grapeC = round(random(3,10)); 
+  //print(grapeC);
+  return grapeC;
+}
+//update position of each grape
+void updateGrapePosition(){
+ if (grapePosX >= 300){
+     grapePosX = grapePosX -30;
+    }
+    grapePosX = grapePosX + 30;
+    Grapes(); 
+}
+
+//create each Grape
+void Grapes(){
+  stroke(0,0,0);  
+  strokeWeight(1);
+
+  fill(66,2,70);
+  //grape Body
+  ellipse(grapePosX, grapePosY, 30,30); 
+  strokeWeight(5);
+  //grape eyes
+    stroke(255);
+  point(grapePosX-5,grapePosY-5);
+  point(grapePosX+4, grapePosY-5); 
+  rect(grapePosX-5, grapePosY+5, 8,.5);
+}
+void mousePressed(){
+  loop();  
+}
+//reset main values of grapes
+void restart(){
+ grapeCount = 10;
+ grapePosX = 100;
+ grapePosY = 300;
+}
+  
+  <canvas id="mycanvas4"></canvas>
   
   <script type="text/processing" data-processing-target="mycanvas5">
+  
+  //Image and font initalizations
+PImage piano;
+PImage musicNotes;
+PFont font;
+
+//Declaration of keys and Music Notes
+KeyObjects myKey;
+KeyObjects myKey2;
+KeyObjects myKey3;
+KeyObjects myKey4;
+KeyObjects myKey5;
+KeyObjects myKey6;
+KeyGen playNote1;
+
+//Global Variables
+int xV = 100;
+int yV = 100;
+int keyChosen;
+
+
+//Setup of frameRate and settings
+void setup(){
+ frameRate(1);  
+ size(900,800);
+ font = createFont("Frutiger",30, true);
+ textFont(font); 
+
+ //Image loads
+ piano = loadImage("piano1.png");
+ musicNotes = loadImage("music-01.jpg");
+ 
+ //creation of class objects
+ myKey = new KeyObjects(325,417,22,48);
+ myKey2 = new KeyObjects(369,417,22,48);
+ myKey3 =  new KeyObjects(411,417,22,48);
+ myKey4 = new KeyObjects(454,417,22,48);
+ myKey5 = new KeyObjects(497,417,22,48);
+ myKey6 = new KeyObjects(538,417,22,48);
+ playNote1 =  new KeyGen();
+}
+
+void draw(){
+ frameRate(1);
+ background(200,150,10);
+ tint(255, 255);  
+ image(piano, 300, 200);
+
+   //loops and creates each every other keys on top of image 
+   myKey.create();
+   myKey2.create();
+   myKey3.create();
+   myKey4.create();
+   myKey5.create();
+   myKey6.create();
+   
+   //randomizes which key is played
+   keyChosen = round(random(5));
+   
+   //when keyChosen is selected it will generate the random colors on top of keys
+   if (keyChosen == 0) {
+       myKey.playKey();
+       fill(200,150,10);
+       playNote1.create();
+       playNote1.move();
+   }
+   else if (keyChosen == 1) {
+     myKey2.playKey();
+     fill(200,150,10);
+     playNote1.create();
+     playNote1.move();
+   }
+   else if (keyChosen == 2){
+     myKey3.playKey();
+     fill(200,150,10);
+     playNote1.create();
+     playNote1.move();
+   }
+   else if (keyChosen == 3){
+     myKey4.playKey();
+     fill(200,150,10);
+     playNote1.create();
+     playNote1.move();
+   }
+   else if (keyChosen == 4){
+     myKey4.playKey();
+     fill(200,150,10);
+     playNote1.create();
+     playNote1.move();
+   }
+   else if (keyChosen == 5){
+     myKey5.playKey();
+     fill(200,150,10);
+     playNote1.create();
+     playNote1.move();
+   }   
+}
+
+//KeyObject Class
+class KeyObjects {
+  
+    int xVal, yVal, widthVal, heightVal;
+  
+  //Constructor
+   KeyObjects(int _xVal, int _yVal, int _width, int _height){
+
+     xVal = _xVal;
+     yVal = _yVal;
+     widthVal = _width;
+     heightVal = _height;
+       
+   }
+     
+   //Creates each rectangle key on the piano image  
+   void create(){
+     
+     fill(255,255,255, 200);
+     noStroke();
+     tint(255,127);
+     rect(xVal, yVal, widthVal, heightVal);
+   }    
+
+   //function that colors the keys
+   void playKey(){
+    //print(" " + keyChosen + " ");
+    int RGB1 = round(random(0,255));
+    int RGB2 = round(random(0,255));
+    int RGB3 = round(random(0,255)); 
+    
+    fill(RGB1, RGB2, RGB3);
+    rect(xVal, yVal, widthVal, heightVal);    
+   }
+ 
+}
+
+//Class KeyGen that creates the random movements of key Notes
+class KeyGen {
+  
+  int keyX, keyY;
+  
+  //Constructor
+  KeyGen(){
+    
+    keyX = round(random(0,800));
+    keyY = round(random(100,800));
+  }    
+  
+  //Create the Music Note
+  void create(){
+   // print(" " + keyX + " " + keyY + " ");
+    fill(0,0,0);
+    ellipse(keyX-5, keyY, 30,20);
+    //
+    rect(keyX, keyY-50, 10,50);
+    rect(keyX, keyY-60, 30,10);
+
+  }
+  
+  //Move the music Note
+  void move(){
+    
+   print(" " + keyX + " " + keyY + " "); 
+   
+   keyX = round(random(100,800));
+   keyY = round(random(100,800)); 
+   
+   //if statements to fluctuate the position of the random Music Note location
+    if (keyX >= 280 && keyX <= 380){
+      
+       keyX = keyX -100;
+       
+    }
+    else if (keyX >= 381 && keyX <= 480){
+      
+      keyX = keyX - 200;
+      
+    }
+    else if (keyX >= 481 && keyX <= 600){
+      
+      keyX = keyX + 200;
+      
+    }
+    if (keyY >= 180 && keyX <= 280){
+      
+       keyX = keyX -100;
+       
+    }
+    else if (keyX >= 281 && keyX <= 380){
+      
+      keyX = keyX - 200;
+      
+    }
+    else if (keyX >= 381 && keyX <= 500){
+      
+      keyX = keyX + 200;
+      
+    }
+   
+  }
+  
+}
+  
+//Changes to next state that is more colorful
+void mousePressed(){
+  frameRate(.1);
+  background(musicNotes);
+  fill(255,0,0);
+  text("I love the sound that the piano makes!",100,100);
+ 
+}
+  
   </script>
-  <canvas id="mycanvas1"></canvas>
+  <canvas id="mycanvas5"></canvas>
   
   
   
