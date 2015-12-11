@@ -775,222 +775,170 @@ void candleAndGhost(){
 
 <p>
   This is a fun non-interactive piano playing image that uses a base pianao image but processing generates different keys that look as if they are playing.<br>
-  Whenever the user wishes to switch to the other scene they just need to click the mouse.
-  <br>
+  Whenever the user wishes to switch to the other scene they just need to click the mouse.<br>
   Purpose of this program was to work with Classes and random generators.<br>
 </p>
 
 <script type="text/processing" data-processing-target="mycanvas5">
-  
-    //Image and font initalizations
-PImage piano;
-PImage musicNotes;
-PFont font;
 
-//Declaration of keys and Music Notes
-KeyObjects myKey;
-KeyObjects myKey2;
-KeyObjects myKey3;
-KeyObjects myKey4;
-KeyObjects myKey5;
-KeyObjects myKey6;
-KeyGen playNote1;
+ int ghostBPosx = 300;
+ int ghostBPosy = 400;
+ int ghostELPosx = 330;
+ int ghostELPosy = 370;
+ int ghostERPosx = 270;
+ int ghostERPosy = 370;
 
-//Global Variables
-int xV = 100;
-int yV = 100;
-int keyChosen;
+ int pressCount = 0;
+ boolean ghostAppear = false;
+ boolean kill = false;
+ boolean keyStarted = false;
+ PFont font;
+ int warnX = 55;
+ int warnY = 200;
+ int move = 1;
+ final int WAIT_TIME = (int) (5 * 1000); // 5 seconds
+ int startTime;
 
-
-//Setup of frameRate and settings
-void setup(){
- frameRate(1);  
- size(900,800);
- font = createFont("Frutiger",30, true);
- textFont(font); 
-
- //Image loads
- piano = loadImage("https://cloud.githubusercontent.com/assets/10077792/11758072/580644cc-a02c-11e5-85fe-c693311b4515.png");
- musicNotes = loadImage("https://cloud.githubusercontent.com/assets/10077792/11758070/540de71c-a02c-11e5-94a0-c4d15cfc4b16.jpg");
  
- //creation of class objects
- myKey = new KeyObjects(325,417,22,48);
- myKey2 = new KeyObjects(369,417,22,48);
- myKey3 =  new KeyObjects(411,417,22,48);
- myKey4 = new KeyObjects(454,417,22,48);
- myKey5 = new KeyObjects(497,417,22,48);
- myKey6 = new KeyObjects(538,417,22,48);
- playNote1 =  new KeyGen();
+ 
+void setup(){
+  
+ size(600,600);
+ background(0,0,0);
+ font = createFont("Frutiger",10, true);
+ textFont(font);
+  
+}
+
+//Moves the Beware text object left and right on screen
+void moveText(){
+  
+   if ((warnX + 100) >= width){
+       //background(0,0,0);
+       
+     move = move * -1;
+
+   }else if (warnX <= 0){
+       //background(0,0,0);
+     move = move * -1;
+   }  
+      
+  warnX = warnX + move;
+  fill(255);
+  text("Beware of GHOST!", warnX, warnY);
+  
 }
 
 void draw(){
- frameRate(1);
- background(200,150,10);
- tint(255, 255);  
- image(piano, 300, 200);
+  
+ background(0,0,0);
+  text("Click Spacebar to light candle", 50,50);
 
-   //loops and creates each every other keys on top of image 
-   myKey.create();
-   myKey2.create();
-   myKey3.create();
-   myKey4.create();
-   myKey5.create();
-   myKey6.create();
-   
-   //randomizes which key is played
-   keyChosen = round(random(5));
-   
-   //when keyChosen is selected it will generate the random colors on top of keys
-   if (keyChosen == 0) {
-       myKey.playKey();
-       fill(200,150,10);
-       playNote1.create();
-       playNote1.move();
-   }
-   else if (keyChosen == 1) {
-     myKey2.playKey();
-     fill(200,150,10);
-     playNote1.create();
-     playNote1.move();
-   }
-   else if (keyChosen == 2){
-     myKey3.playKey();
-     fill(200,150,10);
-     playNote1.create();
-     playNote1.move();
-   }
-   else if (keyChosen == 3){
-     myKey4.playKey();
-     fill(200,150,10);
-     playNote1.create();
-     playNote1.move();
-   }
-   else if (keyChosen == 4){
-     myKey4.playKey();
-     fill(200,150,10);
-     playNote1.create();
-     playNote1.move();
-   }
-   else if (keyChosen == 5){
-     myKey5.playKey();
-     fill(200,150,10);
-     playNote1.create();
-     playNote1.move();
-   }   
+ 
+  stroke(255);
+  strokeWeight(2);
+  
+  //Create Candle Stick
+  fill(238,224,74);
+  rect(150, 400, 50,150);
+
+
+  //Create Desk that holds candle
+  stroke(255);
+    beginShape();
+    fill(124,69,21);
+      vertex(0,600);
+      vertex(100,500);
+      vertex(250,500);
+      vertex(350,600);
+    
+    endShape();
+
+
+
+      if (ghostAppear == true){
+        
+          //Initial White Ghost that shows up after the for loop hits i=80
+          strokeWeight(1);
+          noFill();
+          stroke(255);
+          ellipse(ghostBPosx,ghostBPosy,150,150);
+          ellipse(ghostELPosx,ghostELPosy,15,20);
+          ellipse(ghostERPosx,ghostERPosy,15,20);
+            beginShape();
+              strokeWeight(10);
+              vertex(260,400);
+              vertex(275,425);
+              vertex(288,400);
+              vertex(295, 420);
+              vertex(300,400);
+              vertex(315, 425);
+              vertex(330, 400);
+              //vertex(337,310);
+            endShape();
+            
+            
+          //If the user clicks the mouse, the Ghost will turn red as if killed/scared away 
+          if (kill == true){
+          noFill();
+          strokeWeight(2);
+          stroke(255,0,0);
+          ellipse(ghostBPosx,ghostBPosy,150,150);
+
+          stroke(255,0,0);
+          ellipse(ghostELPosx,ghostELPosy,15,20);
+          ellipse(ghostERPosx,ghostERPosy,15,20); 
+            }   
+            
+  } 
+    candleAndGhost();
+    moveText(); 
 }
-
-//KeyObject Class
-class KeyObjects {
-  
-    int xVal, yVal, widthVal, heightVal;
-  
-  //Constructor
-   KeyObjects(int _xVal, int _yVal, int _width, int _height){
-
-     xVal = _xVal;
-     yVal = _yVal;
-     widthVal = _width;
-     heightVal = _height;
-       
-   }
      
-   //Creates each rectangle key on the piano image  
-   void create(){
-     
-     fill(255,255,255, 200);
-     noStroke();
-     tint(255,127);
-     rect(xVal, yVal, widthVal, heightVal);
+
+  void keyPressed(){
+    
+      //If the key is pressed light the candle fire
+      keyStarted = true;
+      
    }    
+   
+//Starts the countdown timer to create the ghost
+void candleAndGhost(){
+      if (keyStarted == true){
+      
+      //Tell user to click mouse to scare ghost text object
+      fill(255,0,0);
+      text("Click Mouse Button to Scare Ghost Away", 50,100);
+      //print("pressed");
+      strokeWeight(2);
+      stroke(240,230,40);
+      fill(255,0,0);
+      ellipse(175,375,10,40);
+      
+      for (int i=0; i < 100; i++){
 
-   //function that colors the keys
-   void playKey(){
-    //print(" " + keyChosen + " ");
-    int RGB1 = round(random(0,255));
-    int RGB2 = round(random(0,255));
-    int RGB3 = round(random(0,255)); 
-    
-    fill(RGB1, RGB2, RGB3);
-    rect(xVal, yVal, widthVal, heightVal);    
+      //Make user wait 5 seconds before the Ghost appears
+      if (millis() - startTime > WAIT_TIME) {
+        startTime = millis();
+        ghostAppear = true;
+
+        break; 
+      }
+}
+
+  }
+  }
+  
+  //Begin CandleAndGhost countdown function
+  void mousePressed(){
+   
+   if (keyStarted == true){
+     
+   kill = true; 
    }
- 
-}
-
-//Class KeyGen that creates the random movements of key Notes
-class KeyGen {
-  
-  int keyX, keyY;
-  
-  //Constructor
-  KeyGen(){
-    
-    keyX = round(random(0,800));
-    keyY = round(random(100,800));
-  }    
-  
-  //Create the Music Note
-  void create(){
-   // print(" " + keyX + " " + keyY + " ");
-    fill(0,0,0);
-    ellipse(keyX-5, keyY, 30,20);
-    //
-    rect(keyX, keyY-50, 10,50);
-    rect(keyX, keyY-60, 30,10);
-
   }
-  
-  //Move the music Note
-  void move(){
-    
-   print(" " + keyX + " " + keyY + " "); 
-   
-   keyX = round(random(100,800));
-   keyY = round(random(100,800)); 
-   
-   //if statements to fluctuate the position of the random Music Note location
-    if (keyX >= 280 && keyX <= 380){
-      
-       keyX = keyX -100;
-       
-    }
-    else if (keyX >= 381 && keyX <= 480){
-      
-      keyX = keyX - 200;
-      
-    }
-    else if (keyX >= 481 && keyX <= 600){
-      
-      keyX = keyX + 200;
-      
-    }
-    if (keyY >= 180 && keyX <= 280){
-      
-       keyX = keyX -100;
-       
-    }
-    else if (keyX >= 281 && keyX <= 380){
-      
-      keyX = keyX - 200;
-      
-    }
-    else if (keyX >= 381 && keyX <= 500){
-      
-      keyX = keyX + 200;
-      
-    }
-   
-  }
-  
-}
-  
-//Changes to next state that is more colorful
-void mousePressed(){
-  frameRate(.1);
-  background(musicNotes);
-  fill(255,0,0);
-  text("I love the sound that the piano makes!",100,100);
- 
-}
+
 </script>
 
 <canvas id= "mycanvas5"></canvas>
@@ -1262,6 +1210,8 @@ class Timer{
 </script>
 
 <canvas id= "mycanvas6"></canvas>
+
+
 
 <script type="text/processing" data-processing-target="mycanvas7">
   
