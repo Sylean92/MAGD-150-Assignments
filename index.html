@@ -5,248 +5,434 @@
   </header>
 
   <h1>Final Program Assignment: Monster Defender</h1>
+  
+  <p>
+    The current project is a short arcade style video game mockup.<br>
+  The concept of this game is that you are a Mage Character trying to <br>fight off the evil monsters trying to take over the world.
+  As the Mage, you will control him with keys W, A, S & D to navigagte. <br>To attack the monsters you will use the mouse to click and shoot the Mage's beam.
+  
+  When the Mage's beam collides with the Monsters, then the Hero <br> kills it and gains a point.
+  
+  The theme of this game reminds me of various PC MMO's given that a Mage is involved.
+  So I wanted to do a twist on an arcade game that looks like an arcade/pixel <br> game but give a little feel of MMO's based on the character choice.  </p>
+  
   <script type="text/processing" data-processing-target="mycanvas1">
-      int forward = 0;
+      //Overview of Final:
+/*
+  The current project is a short arcade style video game mockup.
+  The concept of this game is that you are a Mage Character trying to fight off the evil monsters trying to take over the world.
+  As the Mage, you will control him with keys W, A, S & D to navigagte. To attack the monsters you will use the mouse to click and shoot the Mage's beam.
+  
+  When the Mage's beam collides with the Monsters, then the Hero kills it and gains a point.
+  
+  The theme of this game reminds me of various PC MMO's given that a Mage is involved.
+  So I wanted to do a twist on an arcade game that looks like an arcade/pixel game but give a little feel of MMO's based on the character choice.
+*/
 
-//bullet
-int bulletP1X = mouseX+248;
-int bulletP1Y =mouseY+100; 
-int bulletP2X = mouseX+207;
-int bulletP2Y = mouseY+100;
-int bulletRextX = mouseX+215;
-int bulletRextY = mouseY+95;
-int bulletT1X = mouseX+240;
-int bulletT1Y = mouseY+100;
-int bulletT2X = mouseX+215;
-int bulletT2Y = mouseY+100;
+int j;
+PImage hero;
+PImage monster;
+PImage moon;
+PImage sad;
+PImage happy;
+boolean monLoses = false;
+
+Hero myhero;
+Monsters myMonsters1;
+Monsters myMonsters2;
+Stars myStars;
+
+int starX = 200;
+int starY = 100;
+int max = 15;
+int[] numMonsters = new int[max];
+int MonCounter = 0;
+int MonY = 0;
+int MonX = 650;
+int MonWins = 0;
+int HeroWins = 0;
+boolean gameOver = false;
+
+
+Timer myTimer;
 
 void setup(){
   
-size(1300,810);  
-  
+    size(800,650);
+//    println("Starx:"+starX+" Stary:"+starY);
+    j=0;
+
+    //Declare Image files
+    hero = loadImage("mage1.png");
+    monster = loadImage("monster.png");
+    moon = loadImage("moon.png");
+    sad = loadImage("sad.png");
+    happy = loadImage("happy.png");
+    //Declare Classes
+    myhero = new Hero();
+    myStars = new Stars();
+    myMonsters2 = new Monsters(900,300);
+      
+    //Set the random Y axis position of Monsters
+    for(int i=0; i < max; i++){   
+      int ran1 = round(random(0, height/4));
+      numMonsters[i] = ran1;
+  //    println("ran1:"+ran1);
+    }
+    
+    myTimer = new Timer(5000);
+      
 }
+
+//delay for 3 seconds timer
+void delay(int delay)
+    {
+      int time = millis();
+      while(millis() - time <= delay);
+    }
 
 void draw(){
   
-  background(0,0,0);
-  
-  strokeWeight(5);
-  stroke(255,255,255);  
-  //stars
-  point(60,70);  
-  point(400,300);
-  point(100,90);
-  point(150,120);
-  point(200,200);
-  point(230,100);
-  point(400,400);
-  point(100,400);
-  point(60,700);  
-  point(1000,300);
-  point(900,90);
-  point(910,500);
-  point(600,500);
-  point(620,300);
-  point(1100,200);
-  point(100,600);
-  point(700,800);  
-  point(400,750);
-  point(350,550);
-  point(1200,600);
-  point(1250,200);
-  point(900,700);
-  point(950,750);
-  point(1250,750);
-  
-  fill(121,17,17);
-  strokeWeight(1);
-  stroke(0,0,0);
+    //frameRate(1);
+    frameRate(60);     
+    //Star background with ScoreBoard
+    background(0,0,0);
+    fill(255,0,0);
+    line(415,0,415,height);
 
-  triangle(mouseX+20,mouseY+50,mouseX+20,mouseY+150,mouseX+200,mouseY+100);
-  fill(255,255,210);
-  triangle(mouseX+150,mouseY+87,mouseX+150,mouseY+113,mouseX+200,mouseY+100);
-  
-  //Left wing of Space Ship
-  beginShape();
-  stroke(255,255,255);
-    fill(121,17,17);
-    vertex(mouseX+20,mouseY+50);
-    vertex(mouseX+40,mouseY+40);
-    vertex(mouseX+200,mouseY+95);
-    vertex(mouseX+200,mouseY+105);
-  endShape();
-
-  //Right wing of Space Ship
-  beginShape();
-  stroke(255,255,255);
-    fill(121,17,17);
-    vertex(mouseX+20,mouseY+150);
-    vertex(mouseX+40,mouseY+160);
-    vertex(mouseX+200,mouseY+105);
-    vertex(mouseX+200,mouseY+100);
-  endShape();
-
-  //Inside white banner of Space Ship (top)
-  beginShape();
-  stroke(255,255,255);
-    fill(255,255,255);
-    vertex(mouseX+20,mouseY+65);
-    vertex(mouseX+55,mouseY+85);
-    vertex(mouseX+150,mouseY+90);
-    vertex(mouseX+150,mouseY+100);
-    vertex(mouseX+20,mouseY+100);
-  endShape();
-
-  //Inside white banner of Space Ship (bottom)
-  beginShape();
-    vertex(mouseX+20,mouseY+135);
-    vertex(mouseX+55,mouseY+115);
-    vertex(mouseX+150,mouseY+112);
-    vertex(mouseX+150,mouseY+100);
-    vertex(mouseX+20,mouseY+100);
-  endShape();
-
-  //White back of ship behind the cockpit
-  beginShape();
-    fill(255,255,255);
-    vertex(mouseX+5,mouseY+80);
-    vertex(mouseX+20,mouseY+65);
-    vertex(mouseX+20,mouseY+135);
-    vertex(mouseX+5,mouseY+115);  
-  endShape();
-  
-  fill(0,0,0);
-  ellipse(mouseX+30,mouseY+100,30,20);
-  ellipse(mouseX+60,mouseY+70,10,10);
-  ellipse(mouseX+60,mouseY+130,10,10);
-  stroke(0,0,0);
-  
-  //square shapes inside ship
-  fill(255,255,255);
-  stroke(0,0,0);
-  rect(mouseX+100,mouseY+95,50,10);
-  rect(mouseX+105,mouseY+98,40,4);
-  
-  //line design inside white part of Space Ship
-  line(mouseX+20,mouseY+100,mouseX+60,mouseY+70);
-  line(mouseX+30,mouseY+110,mouseX+60,mouseY+130);
-
-  //This changes the background and wing color of Space Ship
-  if(mousePressed){
+    
    
-  fill(217,200,11);
-  background(9,35,80);
-  
-  strokeWeight(1);
-  stroke(0,0,0);
+     
+     if (myTimer.isFinished() == true){
+       
+     text("Monster Wins: " + MonWins, 200,50); 
+     text("Player Wins: " + HeroWins, 200,100);
 
-  triangle(mouseX+20,mouseY+50,mouseX+20,mouseY+150,mouseX+200,mouseY+100);
-  fill(255,255,210);
-  triangle(mouseX+150,mouseY+87,mouseX+150,mouseY+113,mouseX+200,mouseY+100);
-  
-  //Left wing of Space Ship
-  beginShape();
-  stroke(255,255,255);
-    fill(121,17,17);
-    vertex(mouseX+20,mouseY+50);
-    vertex(mouseX+40,mouseY+40);
-    vertex(mouseX+200,mouseY+95);
-    vertex(mouseX+200,mouseY+105);
-  endShape();
+     //Addition of normal processing shape [stary background]
+     myStars.drawStars();
+     //Moon background
+     image(moon,40,40);     
+     //Display Hero which changes by keyPressed      
+       
+     myhero.move();
+     myhero.display();
+      
+     
+     //If the Monster count loop ends, end program and tell user who won
+     if (gameOver == true){
+     
+       
+       //Display Third State - ending screen
+       delay(3000);
+       background(0,0,0);
+        if (HeroWins > MonWins){
+          
+         text("CONGRATS YOU WON!", height/2, width/2);
+         
+        }
+        else{
+          
+          text("YOU LOST. GOOD LUCK NEXT TIME!", height/2, width/2);
+        }
+        noLoop();         
+      }
+     
+     //Loop through array of Y positions of Monter characters
+     if (MonCounter < max){
+       
+       //if Monster Count is less than 5 display monsters and increment their position on X axis
+       MonY = numMonsters[MonCounter];
+       //move monster
+       MonX = MonX - 5;
+       //Call class
+       myMonsters1 = new Monsters(MonX, MonY);
+       //Display Monster's new position
+       myMonsters1.display();
+       
+       //if the Monster crosses the white line, Create Second State Screen and create the new Monster
+       if (MonX <= 300 && monLoses == false){
+         //frameRate(.5);
+         
+         //Second State********
+         frameRate(1);
+         background(255,0,0);
+         textSize(15);
+         text("Monster Passed the Line!", 400, 200);
+         image(sad, 400,400);
 
-  //Right wing of Space Ship
-  beginShape();
-  stroke(255,255,255);
-    fill(121,17,17);
-    vertex(mouseX+20,mouseY+150);
-    vertex(mouseX+40,mouseY+160);
-    vertex(mouseX+200,mouseY+105);
-    vertex(mouseX+200,mouseY+100);
-  endShape();
-
-  //Inside white banner of Space Ship (top)
-  beginShape();
-  stroke(255,255,255);
-    fill(255,255,255);
-    vertex(mouseX+20,mouseY+65);
-    vertex(mouseX+55,mouseY+85);
-    vertex(mouseX+150,mouseY+90);
-    vertex(mouseX+150,mouseY+100);
-    vertex(mouseX+20,mouseY+100);
-  endShape();
-
-  //Inside white banner of Space Ship (bottom)
-  beginShape();
-    vertex(mouseX+20,mouseY+135);
-    vertex(mouseX+55,mouseY+115);
-    vertex(mouseX+150,mouseY+112);
-    vertex(mouseX+150,mouseY+100);
-    vertex(mouseX+20,mouseY+100);
-  endShape();
-
-  //White back of ship behind the cockpit
-  beginShape();
-    fill(255,255,255);
-    vertex(mouseX+5,mouseY+80);
-    vertex(mouseX+20,mouseY+65);
-    vertex(mouseX+20,mouseY+135);
-    vertex(mouseX+5,mouseY+115);  
-  endShape();
-  
-  fill(0,0,0);
-  ellipse(mouseX+30,mouseY+100,30,20);
-  ellipse(mouseX+60,mouseY+70,10,10);
-  ellipse(mouseX+60,mouseY+130,10,10);
-  
-  stroke(0,0,0);
-  
-  //square shapes inside ship
-  fill(255,255,255);
-  stroke(0,0,0);
-  rect(mouseX+100,mouseY+95,50,10);
-  rect(mouseX+105,mouseY+98,40,4);
-  
-  //line design inside white part of Space Ship
-  line(mouseX+20,mouseY+100,mouseX+60,mouseY+70);
-  line(mouseX+30,mouseY+110,mouseX+60,mouseY+130);
-  
-  }
-  
-  //If the key is pressed, shoot the bullet from the Space Ship
-  if (keyPressed == true){
-    
-     fill(150,0,0);
-    // rect(mouseX+200, mouseY+ 130, 300,10);
-    
-  //bullet
-  bulletP1X = mouseX+248;
-  bulletP1Y =mouseY+100; 
-  bulletP2X = mouseX+207;
-  bulletP2Y = mouseY+100;  
-  bulletRextX = mouseX+215;
-  bulletRextY = mouseY+95;
-  bulletT1X = mouseX+515;
-  bulletT1Y = mouseY+100;
-  bulletT2X = mouseX+217;
-  bulletT2Y = mouseY+100;
-  
-  //bullet body
-  strokeWeight(1);
-  //fill(255,255,255);
-  rect(bulletRextX,bulletRextY,300,10);
-
-  //TWO_PI IS FULL CIRCLE
-  //PI + HALF_PI == 1.5 PI == -0.5 PI
-  //TAU + HALF_PI == TWO_PI + HALF_PI == 2.5 PI == 0.5 PI
-  
-  //round ends of bullet
-  arc(bulletT1X,bulletT1Y,12,12,-HALF_PI, HALF_PI);
-  arc(bulletT2X,bulletT2Y,13,12,radians(90),radians(270));  
-  
+         //increment Monster Wins
+         MonWins = MonWins + 1;
+         fill(0,0,0);
+         text("Monster Wins: " + MonWins, 200, 50); 
+         //Increment if statement
+         MonCounter++;
+          
+          //reset Monster X position
+          MonX = 650; 
+       }
+       else if (monLoses == true && MonX > 300){
+          frameRate(1);
+          HeroWins = HeroWins + 1;
+          background(255);
+          image(happy,400,400);
+          fill(0,0,0);
+          
+          textSize(15);
+          text("Hero Won this round!", 400, 200);
+          
+          text("Player Wins: " + HeroWins, 200,100);
+          MonCounter++;
+          MonX = 650;
+          monLoses = false;      
+     }
+     }
+     //end game
+      else{        
+        gameOver = true;       
+      }    
+     }
+     
+    //<>//
 
 }
-    
+
+//Determines collision of Hero beam to monster
+void mousePressed(){
+       
+       int beamRightX = 0, beamRightY = 0;
+       int monLeftX = 0, monPositionY = 0;
+       
+       myhero.shoot();   
+       
+       //pull hero beam location and monster location functions
+       beamRightX = myhero.returnX();
+       beamRightX = beamRightX + 100;
+       beamRightY = myhero.returnY();
+       monLeftX = myMonsters1.returnX();
+       monPositionY = myMonsters1.returnY();
+
+       println("HeroBeamX:" + beamRightX + " HeroBeamY:" + beamRightY);
+       println("MonsterX:" + monLeftX + " MonsterY:" + monPositionY);
+ 
+       //if beam and monster collide start trigger to give hero a point 
+       if ( (beamRightX >= monLeftX) && (beamRightX - 100 <= monLeftX + 150) && ( (beamRightY +5 >= monPositionY) && (beamRightY +5 <= monPositionY+150) ) )
+       {
+       monLoses = true;
+       //frameRate(1);
+       //background(255);
+       }
+       
+        
+}
+
+//Hero Class
+
+int energyBeamX, energyBeamY;
+
+class Hero{
+  int x, y;
+  
+   Hero(){
+  
   }
+  
+void display(){
+    image(hero,x,y);
+  }
+  
+  //separate detection from code execution
+  //see which key is being pressed and point it to a variable that locks (boolean)
+     //is W pressed? = yes... is boolean true?... yes... execute code
+  void move() {
+    if(keyPressed){
+      if(key == 'w'){
+        y = y - 5;
+      } 
+      if(key == 'a'){
+        x = x - 5;
+      }
+      if(key == 'd'){
+        x = x + 5;
+      } 
+      if(key == 's'){
+       y = y + 5;
+      }
+    }
+  }
+  
+  //shoot hero beam to attack monsters
+  void shoot(){
+
+        //set rectangle left x point from character
+        energyBeamX = x;
+        energyBeamY = y;
+        energyBeamX = energyBeamX + 200;
+        energyBeamY = energyBeamY+85;
+        rect(energyBeamX,energyBeamY,100,10);       
+        
+            
+  }
+ 
+  //grab beam's X
+  int returnX(){
+    int myReturn  = energyBeamX;
+    return myReturn;
+  }
+  //grab beam's Y
+    int returnY(){
+    int myReturn  = energyBeamY;
+    return myReturn;
+  }
+}
+
+//Hero Class
+  int losses = 0;
+ 
+class Monsters{
+  int Mx, My;
+  
+   Monsters(int boxX, int boxY){
+    Mx = boxX;
+    My = boxY;    
+  }
+ 
+//display the Monsters
+void display(){
+  
+    if (Mx <= 200){
+      losses = losses + 1;
+       text("Monster Wins: " + losses, 100,200);   
+    }else{
+      Mx = Mx+1;
+      
+    image(monster,Mx,My);
+    }
+  }
+  
+  //separate detection from code execution
+  //see which key is being pressed and point it to a variable that locks (boolean)
+     //is A pressed? = yes... is boolean true?... yes... execute code
+  void move() {
+    if(keyPressed){
+      if(key == 'a'){
+        Mx = Mx - 5;
+      }
+      if(key == 'd'){
+        Mx = Mx + 5;
+      } 
+    }
+  }
+ 
+ //return Monter's X
+  int returnX(){
+    int myReturn  = Mx;
+    return myReturn;
+  }
+  //return Monster's Y
+    int returnY(){
+    int myReturn  = My;
+    return myReturn;
+  }
+  
+  
+}
+
+//Creates a random generated star background for the game
+class Stars{
+  
+Stars(){
+    
+  }  
+   //determine how many starts will be created    
+int numberOfStars(){ 
+ int stars = round(random(8,20)); 
+  return stars;
+}
+
+//display starts based on numberOfStarts function
+void drawStars(){  
+
+  for(int i=0; i < numberOfStars(); i++){    
+     updateStarPosition();   
+    // println("Star: " + i);
+  }
+}
+
+//update position of each grape
+void updateStarPosition(){
+  
+  starX = round(random(0, width));
+  starY = round(random(0, width));
+  
+ if (starX >= 700){
+     starX = starX -30;
+    }
+    else{
+     // println("Starx:"+starX+" Stary:"+starY);
+    starX = starX + 30;
+    //println("Starx:"+starX+" Stary:"+starY);
+    }
+ if (starY >= 400){
+     starY = starY -30;
+ }
+   else{ 
+    // println("Starx:"+starX+" Stary:"+starY);
+    starY = starY + 30;
+   // println("Starx:"+starX+" Stary:"+starY);
+   }
+   
+   //println("X: " + starX + " Y: " + starY);
+    StarsDraw();
+}
+
+//create start shape
+void StarsDraw(){
+  stroke(255);  
+  strokeWeight(5);
+  fill(255);
+  point(starX, starY);
+}
+ 
+}
+
+class Timer{
+  
+  int savedTime;  // When Timer started
+  int totalTime;  // How long Timer should last
+  
+  // The constructor, set how long the Timer last with integer value
+  Timer(int _totalTime){
+    totalTime = _totalTime;
+  }
+  
+  // Start the Timer
+  void start() {
+    savedTime = millis();
+  }
+  
+  boolean isFinished() {
+   // check how much time has passed
+   
+
+   int passedTime = millis() - savedTime;
+   
+   //if the time is passed show controls for users
+   if (passedTime > totalTime) {
+     textSize(10);
+     text("Kill Monsters Before they Pass the White Line!", 15,400);
+     text("Controls:",15,420);
+     text("D:Go Right",15,440);
+     text("A:Go Left",15,460);
+     text("W:Go Up",15,480);
+     text("S:Go Down",15,500);
+     return true;
+   } else {
+     text("Game will begin in 5 seconds: " + (passedTime/1000 + 1) + " secs", 15,50);
+     return false;
+   }
+  }
+}
+
 
   </script>
   <canvas id = "mycanvas1"></canvas>
