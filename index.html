@@ -7,72 +7,25 @@
 
   <script type="text/processing" data-processing-target="mycanvas6">
   
- 
 void setup(){
-  size(350,350);
-  background(120,10,200);
   
-  stroke(0,0,0);
-  fill(250,250,10);
-  triangle(100,100,50,100,50,50);
-  
-  //four sided shape
-  //quad(200,200,300,200,200,400,300,400); 
-  
-  
-  fill(250,250,200);
-  // divided by 3
-  //arc(x,y,width,height,start,stop);   
-  arc(250,250,120,120,0,HALF_PI/3);
-  fill(250,100,0);
-  arc(200,200,120,120,0,HALF_PI);
-  
-  //no limit
-  beginShape(QUADS);
-  
-     fill(150,20,30);
-     vertex(20,10);
-     vertex(30,30);
-     vertex(130,50);
-     vertex(120,40);
-     
-  endShape(CLOSE);
+ size(1600,1400);
 
- // beginShape(QUAD_STRIP);
   
-   //  fill(150,20,30);
-     //vertex(100,20);
-     //vertex(100,30);
-     //vertex(160,50);
-     //vertex(150,40);
-     
-  //endShape(CLOSE);  
-  
-  //taks your mouse value as 0 0 since you didn't move it
-  //rect(mouseX, mouseY,20,30);
-   
 }
 
-void draw() {
-    
-  //now redraw the frame to erase the previous. To do this, restate the background color
-  background(120,10,200);  
-  
-  //to keep static shapes the triangles...rects in setup need to be here
-  //half circle will behind the drawn object . move in front then code needs to be after rect code
-  fill(0,0,0);
-  arc(200,200,120,120,0,HALF_PI);
+void draw(){
+  quad(pmouseX+30, pmouseY+50, 10, 10, mouseX, mouseY, 120, 200);
+}
 
-  //takes your mouse value as 0 0 since you didn't move it
-  //So state which values are based on the mouse
-  //rect(20, mouseX, mouseY,30);  
-  fill(255);
-  //where it is located
-  rect(mouseX,mouseY, 30,40);
-  //the +200 adds distance of y value so that you can see
-  rect(mouseX,mouseY+200, 60,100);
-  //fill(0,0,0);
-  //rect(10,10,mouseX,mouseY);
+void mousePressed(){  
+  background(0,0,0);
+  fill(255,255,200);
+  
+}
+
+void keyPressed(){  
+ background(255,0,0);    
 }
   
   </script>
