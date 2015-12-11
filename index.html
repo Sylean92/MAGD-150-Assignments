@@ -993,9 +993,281 @@ void mousePressed(){
 }
 </script>
 
+<2>Assignment 8 - Dungeon Raider</2>
+
+<p>
+  This is a small dungeon raider game where the user is restricted to movement of the character </br>
+  This is the first time I tried to implement restrictions on movement with an object. <br>
+  The user must make there way to the door where the buried treasure is on the other side!<br>
+  
+  Character Controls are listed within the game screen once the timer is over.
+</p>
 <canvas id= "mycanvas5"></canvas>
 
+<script type="text/processing" data-processing-target="mycanvas6">
+  //Image and font initalizations
+PImage platform1;
+PImage platform2;
+PImage platform3;
+PImage door;
+PImage knight;
+PImage knight2;
+PImage chest;
+PFont font;
 
+//Declaration of Class variables
+LevelDesign1 initialLevel1;
+LevelDesign1 initialLevel2;
+LevelDesign1 initialLevel3;
+LevelDesign1 initialLevel4;
+LevelDesign1 initialLevel5;
+LevelDesign1 initialLevel6;
+
+LevelDesign1 initialLevel9;
+LevelDesign1 initialLevel10;
+LevelDesign1 initialLevel11;
+
+Knight myKnight;
+Timer myTimer;
+
+
+//Setup of frameRate and settings
+void setup(){  
+ size(420,500);
+ font = createFont("Frutiger",20, true);
+ textFont(font); 
+ //initialLevel1 = new LevelDesign1();
+
+ //Image loads
+ platform1 = loadImage("https://cloud.githubusercontent.com/assets/10077792/11758159/821f5f40-a02d-11e5-9981-02946c2ff23e.PNG");  
+ platform2 = loadImage("https://cloud.githubusercontent.com/assets/10077792/11758164/87f1f572-a02d-11e5-81e0-3d06e18a9c2a.PNG");
+ platform3 = loadImage("https://cloud.githubusercontent.com/assets/10077792/11758168/8d2eda1e-a02d-11e5-9e40-db80b0ed88e4.png");
+ door = loadImage("https://cloud.githubusercontent.com/assets/10077792/11758149/7212e3a6-a02d-11e5-87a2-80749dc1e3e9.png");
+ knight = loadImage("https://cloud.githubusercontent.com/assets/10077792/11758172/952c7f78-a02d-11e5-9f56-c1170a428015.png");
+ knight2 = loadImage("https://cloud.githubusercontent.com/assets/10077792/11758176/9b7f22ae-a02d-11e5-88b0-9082f59e44f5.png");
+ chest = loadImage("https://cloud.githubusercontent.com/assets/10077792/11758154/7c7e6ed2-a02d-11e5-949e-df3fcff428b0.png");
+ 
+ //creation of class objects
+ initialLevel1 = new LevelDesign1(0,450);
+ initialLevel2 = new LevelDesign1(120,450);
+ initialLevel3 = new LevelDesign1(220,450);
+ initialLevel4 = new LevelDesign1(320,450);
+ initialLevel5 = new LevelDesign1(420,450);
+ initialLevel6 = new LevelDesign1(330,300);
+
+ initialLevel9 = new LevelDesign1(250,400);
+ initialLevel10 = new LevelDesign1(300,400);
+ initialLevel11 = new LevelDesign1(360,400);
+
+ myKnight = new Knight();
+ myTimer = new Timer(5000);
+ 
+}
+
+void draw(){
+ //frameRate(1);
+ background(200,200,100);
+ //creation of class objects
+ initialLevel1.levelBackground1();
+ initialLevel2.levelBackground1();
+ initialLevel3.levelBackground1();
+ initialLevel4.levelBackground1();
+ initialLevel5.levelBackground1();
+ initialLevel6.levelBackground3();
+ 
+ initialLevel9.levelBackground2();
+ initialLevel10.levelBackground2();
+ initialLevel11.levelBackground2();
+ 
+ //after the 5 second timer goes out, begin moving knight
+ if (myTimer.isFinished() == true){
+    myKnight.move();  
+    myKnight.display();
+    
+    
+ }
+
+}
+
+boolean trigger = false;
+
+class Knight{
+
+int centerX, centerY;
+
+ //constructor
+ Knight(){
+   
+  centerX = 10;
+  centerY = 380;
+ }
+ 
+ 
+ //display Knight and background scene changes
+ void display() {
+   
+   //if the knight hasn't made it to the door keep first scene
+   if ((centerX >= 330 && centerX <=420) && centerY == 335){
+     trigger = true; 
+    background(0,0,0);
+    
+   }
+   
+   //if trigger is true show second scene
+   if (trigger == true){
+     background(0,0,0);    
+     image(platform3, 0,390);
+     image(knight2, centerX, centerY);  
+     fill(255,0,0);
+     text("CONGRATS! You found the treasure!", 50,100);
+     
+     image(chest, 15,360);     
+   }
+   
+   //if trigger is false keep first scene
+   if (trigger == false){
+    image(knight, centerX, centerY);  
+   //ellipse(centerX, centerY, 40, 80);
+   }
+   
+ 
+ }
+
+//function to move knight
+ void move() {
+    if(keyPressed){
+      if(key == 'w'){
+        print("y: " + centerY + " ");
+        print("x: " + centerX + " ");
+        //print(" " + centerY + " ");
+        
+        //knight on second landing don't go higher than it
+        if(centerY- 15 <= 335 && (centerX >=220 && centerX <=420)) {
+          centerY = 335;
+        }
+        //else if the knight is before the second landing don't let him go above it
+        else if(centerY- 15 <= 380 && (centerX >=0 && centerX <220)) {
+          centerY = 380;
+        }           
+        //else move him up
+        else{
+            centerY = centerY - 15;
+        }
+      }
+      
+      if(key == 'a'){
+        
+        print(" left: " + centerX + " ");
+        //don't let knight go off of left side of scene
+        if (centerX - 15 <= 0 ){
+           centerX = 10;
+        } 
+        else{
+        //move left
+        centerX = centerX - 15;
+        }  
+      }
+      
+      if(key == 'd'){
+        //don't let knight go off of right side of scene
+        print(" right: " + centerX + " ");
+        if (centerX + 15 >= 340) {
+              centerX = 340; 
+        }
+        else {
+        //else move forward
+        centerX = centerX + 15;
+        }  
+      } 
+      if(key == 's'){
+         print(" down: " + centerY + " ");
+
+       //if the knight is on the first landing, don't let him go lower than it
+        if(centerY+15 > 380) {
+          centerY = 380;
+        }
+        //else move the knight down
+        else{
+          centerY = centerY + 15;
+        }
+      }
+      }
+    }
+
+}
+
+class LevelDesign1 {
+  
+  int x, y, bWid, bHei;
+  
+   LevelDesign1(int boxX, int boxY){
+    x = boxX;
+    y = boxY;    
+  }
+  
+  //platform levels for background [original class]
+  void levelBackground1(){
+    image(platform1, x, y);  
+  }
+  void levelBackground2(){
+    image(platform2, x, y);  
+  }
+  void levelBackground3(){
+    image(door, x, y);  
+  }
+  
+  
+  
+}
+
+class Timer{
+  
+  int savedTime;  // When Timer started
+  int totalTime;  // How long Timer should last
+  
+  // The constructor, set how long the Timer last with integer value
+  Timer(int _totalTime){
+    totalTime = _totalTime;
+  }
+  
+  // Start the Timer
+  void start() {
+    savedTime = millis();
+  }
+  
+  boolean isFinished() {
+   // check how much time has passed
+   
+
+   int passedTime = millis() - savedTime;
+   
+   if (passedTime > totalTime) {
+     text("Travel to the Door", 15,50);
+     text("Controls:",15,100);
+     text("D:Go Right",15,120);
+     text("A:Go Left",15,140);
+     text("W:Go Up",15,160);
+     text("S:Go Down",15,180);
+     return true;
+   } else {
+     text("Game will begin in 5 seconds: " + (passedTime/1000 + 1) + " secs", 15,50);
+     return false;
+   }
+  }
+}
+
+</script>
+
+<canvas id= "mycanvas6"></canvas>
+
+<script type="text/processing" data-processing-target="mycanvas7">
+  
+  
+  
+
+</script>
+
+<canvas id= "mycanvas7"></canvas>
   
   
   
